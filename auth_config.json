@@ -1,0 +1,7 @@
+{
+  "domain": "DOMAIN",
+  "clientId": "CLIENT_ID",
+  "audience": "http://localhost",
+  "namespace": "http://www.myexample.com/",
+  "staticAt": "AT"
+}

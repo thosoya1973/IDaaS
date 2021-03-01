@@ -39,7 +39,28 @@ app.get("/api/private", checkJwt, checkScopes, (req, res) => {
   });
 });
 
-app.get("/api/pizza", checkJwt, (req, res) => {
+function orderDate() {
+ var today = new Date;
+ var year_str = today.getFullYear();
+ var month_str = 1 + today.getMonth();
+ var day_str = today.getDate();
+ var hour_str = today.getHours();
+ var minute_str = today.getMinutes();
+ var second_str = today.getSeconds();
+ 
+ 
+ format_str = 'YYYY/MM/DD/-hh:mm:ss';
+ format_str = format_str.replace(/YYYY/g, year_str);
+ format_str = format_str.replace(/MM/g, month_str);
+ format_str = format_str.replace(/DD/g, day_str);
+ format_str = format_str.replace(/hh/g, hour_str);
+ format_str = format_str.replace(/mm/g, minute_str);
+ format_str = format_str.replace(/ss/g, second_str);
+ 
+ return format_str;
+}
+
+app.get("/api/pizza", checkJwt, checkScopes, (req, res) => {
   var getOptions = {
     method: "GET",
     url: `https://${authConfig.domain}/api/v2/users/` + req.user.sub,
@@ -50,12 +71,12 @@ app.get("/api/pizza", checkJwt, (req, res) => {
     var jsonData = JSON.parse(body);
 
     if (JSON.parse(jsonData.email_verified)) {
-      var orderMetadata = JSON.stringify(jsonData.user_metadata);
+      var orderMetadata = JSON.stringify(jsonData.user_metadata.orders);
 
-      if (typeof orderMetadata === "undefined") {
-        orderMetadata = + '{ Pizza(' + Date.now() + ') }';
+      if (orderMetadata) {
+        orderMetadata = orderMetadata.slice(1,orderMetadata.length - 1) + 'Pizza(' + orderDate() + '), ';
       } else {
-        orderMetadata = orderMetadata.slice(0,orderMetadata.length - 3) + 'Pizza(' + Date.now() + ') }';
+        orderMetadata = 'Pizza(' + orderDate() + '), ';
       }
 
       var patchOptions = {

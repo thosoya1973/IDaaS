@@ -53,7 +53,7 @@ const configureClient = async () => {
     domain: config.domain,
     client_id: config.clientId,
     audience: config.audience,
-    scope: "read:messages"
+    scope: "openid profile email user_metadata read:messages",
   });
 };
 

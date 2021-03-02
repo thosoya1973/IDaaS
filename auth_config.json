@@ -1,0 +1,7 @@
+{
+  "domain": "XXX.jp.auth0.com",
+  "clientId": "XXX",
+  "audience": "http://localhost",
+  "namespace": "http://www.myexample.com/orders",
+  "staticAt": "XXX"
+}
